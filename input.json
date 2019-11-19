@@ -1,0 +1,52 @@
+{
+  "classes": [
+    {
+      "accessModifier": "public",
+      "name": "Course",
+      "fields": [
+        {
+          "type": "int",
+          "name": "name",
+          "accessModifier": "public"
+        }
+      ],
+      "methods": [
+        {
+          "returnType": "int",
+          "name": "name",
+          "accessModifier": "public",
+          "params": [
+            {
+              "type": "int",
+              "name": "count"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "accessModifier": "private",
+      "name": "Module",
+      "fields": [
+        {
+          "type": "int",
+          "name": "title",
+          "accessModifier": "private"
+        }
+      ],
+      "methods": [
+        {
+          "returnType": "string",
+          "name": "title",
+          "accessModifier": "public",
+          "params": [
+            {
+              "type": "int",
+              "name": "count"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
