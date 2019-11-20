@@ -1,18 +1,18 @@
-const yargs = require('yargs');
-const generateMain = require('./generateMain');
+const yargs = require("yargs");
+const generateMain = require("./generateMain");
 
 // Customize yargs version
-yargs.version('1.1.0');
+yargs.version("1.1.0");
 
 // Create add command
 yargs.command({
-    command: 'generate',
-    describe: 'Generate source code from JSON',
+    command: "generate",
+    describe: "Generate source code from JSON",
     builder: {
         jsonFile: {
-            describe: 'Metadata JSON file',
+            describe: "Metadata JSON file",
             demandOption: true,
-            type: 'String'
+            type: "String"
         }
     },
     handler(argv) {
