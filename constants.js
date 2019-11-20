@@ -3,6 +3,7 @@ const MODELS_DIRECTORY = `${OUTPUT_DIRECTORY}/models`;
 const CONTROLLERS_DIRECTORY = `${OUTPUT_DIRECTORY}/controllers`;
 const REPOSITORIES_DIRECTORY = `${OUTPUT_DIRECTORY}/repositories`;
 const SERVICES_DIRECTORY = `${OUTPUT_DIRECTORY}/services`;
+const TEMPLATE_FILES_DIRECTORY = `templates`;
 
 const TYPE_MAPPING = {
     void: "void",
@@ -31,7 +32,22 @@ const JSON_CONSTANTS = {
     TYPE: "type",
     METHODS: "methods",
     RETURN_TYPE: "returnType",
-    PARAMS: "params"
+    PARAMS: "params",
+    FIELDS_ACCESS_METHODS: "fieldsAccessMethods",
+    DEFAULT_CONSTRUCTOR: "defaultConstructor",
+    PARAM_CONSTRUCTOR: "paramConstructor",
+    REPOSITORY_NAME: "repositoryName",
+    SERVICE_NAME: "serviceName",
+    REPOSITORY_VARIABLE: "repositoryVariable",
+    CLASS_SINGULAR_NAME: "classSingularName",
+    CLASS_PLURAL_NAME: "classPluralName"
+};
+
+const TEMPLATE_FILE_PATH_MAPPING = {
+    MODEL: `${TEMPLATE_FILES_DIRECTORY}/Model.java`,
+    REPOSITORY: `${TEMPLATE_FILES_DIRECTORY}/Repository.java`,
+    CONTROLLER: `${TEMPLATE_FILES_DIRECTORY}/Controller.java`,
+    SERVICE: `${TEMPLATE_FILES_DIRECTORY}/Service.java`
 };
 
 module.exports = {
@@ -42,5 +58,6 @@ module.exports = {
     SERVICES_DIRECTORY,
     TYPE_MAPPING,
     ACCESS_MODIFIER_MAPPING,
-    JSON_CONSTANTS
+    JSON_CONSTANTS,
+    TEMPLATE_FILE_PATH_MAPPING
 };
