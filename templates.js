@@ -23,12 +23,11 @@ const paramsTemplate = fields => {
         const typeValue = utils.getTypeValue(item.type);
         return `${typeValue} ${item.name}`;
     });
-    return result.join(",");
+    return result.join(", ");
 };
 
 const defaultConstructorTemplate = className => {
-    const capitalizedName = utils.capitalizeFirstLetter(className);
-    return `public ${capitalizedName}() {};`;
+    return `public ${className}() {};`;
 };
 
 const paramConstructorBodyTemplate = fields => {
@@ -37,10 +36,9 @@ const paramConstructorBodyTemplate = fields => {
 };
 
 const paramConstructorTemplate = (className, fields) => {
-    const capitalizedName = utils.capitalizeFirstLetter(className);
-    const fieldStr = paramsTemplate(fields);
+    const paramStr = paramsTemplate(fields);
     const bodyStr = paramConstructorBodyTemplate(fields);
-    return `public ${capitalizedName}(${fieldStr}) { ${bodyStr} }`;
+    return `public ${className}(${paramStr}) { \n ${bodyStr} \n }`;
 };
 
 const classNameTemplate = (accessModifier, className) => {
@@ -49,11 +47,26 @@ const classNameTemplate = (accessModifier, className) => {
     return `${accessModifierValue} class ${capitalizedName}`;
 };
 
+const methodTemplate = (name, accessModifier, returnType, params) => {
+    const accessModifierValue = utils.getAccessModifierValue(accessModifier);
+    const returnTypeValue = utils.getTypeValue(returnType);
+    const paramStr = paramsTemplate(params);
+    return `${accessModifierValue} ${returnTypeValue} ${name}(${paramStr}) { }`;
+};
+
+const repositoryNameTemplate = name => `${name}Repository`;
+const serviceNameTemplate = name => `${name}Service`;
+const repositoryVariableNameTemplate = name => `${name}Repository`;
+
 module.exports = {
     fieldTemplate,
     getMethodTemplate,
     setMethodTemplate,
     defaultConstructorTemplate,
     paramConstructorTemplate,
-    classNameTemplate
+    classNameTemplate,
+    methodTemplate,
+    repositoryNameTemplate,
+    serviceNameTemplate,
+    repositoryVariableNameTemplate
 };
