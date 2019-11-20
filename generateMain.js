@@ -32,7 +32,7 @@ const parseJSONFile = jsonFilePath => {
     }
 };
 
-const generateModelFile = itemJSON => {
+const generateModelFileUsingStringTemplates = itemJSON => {
     const className = itemJSON[JSON_CONSTANTS.NAME];
     utils.logMessage(`Start processing for ${className}`);
     const accessModifier = itemJSON[JSON_CONSTANTS.ACCESS_MODIFIER];
@@ -74,9 +74,8 @@ const generateModelFile = itemJSON => {
     // return result.join("");
 };
 
-const generateModelFileEJS = itemJSON => {
+const generateModelFile = itemJSON => {
     const className = itemJSON[JSON_CONSTANTS.NAME];
-    utils.logMessage(`Start processing for ${className}`);
     const accessModifier = itemJSON[JSON_CONSTANTS.ACCESS_MODIFIER];
     const fields = itemJSON[JSON_CONSTANTS.FIELDS];
     const methods = itemJSON[JSON_CONSTANTS.METHODS];
@@ -124,34 +123,32 @@ const generateModelFileEJS = itemJSON => {
     classInfo[JSON_CONSTANTS.FIELDS_ACCESS_METHODS] = getsetStr;
     classInfo[JSON_CONSTANTS.METHODS] = methodsStr;
 
-    ejs.renderFile(TEMPLATE_FILE_PATH_MAPPING.MODEL, { classObject: classInfo }, {}, function(err, str) {
-        // console.log(str);
-        const filePath = `${MODELS_DIRECTORY}/${classNameCapitalized}.java`;
-        utils.createFile(filePath, str);
-        utils.logSuccessMessage(`End processing for ${className}`);
-    });
+    generateFileUsingEJS(
+        TEMPLATE_FILE_PATH_MAPPING.MODEL,
+        classNameCapitalized,
+        `${MODELS_DIRECTORY}/${classNameCapitalized}.java`,
+        classInfo
+    );
 };
 
-const generateRepositoryFileEJS = itemJSON => {
+const generateRepositoryFile = itemJSON => {
     const className = itemJSON[JSON_CONSTANTS.NAME];
     const classNameCapitalized = utils.capitalizeFirstLetter(className);
     const classRepositoryName = templates.repositoryNameTemplate(classNameCapitalized);
-
-    utils.logMessage(`Start processing for ${classRepositoryName}`);
 
     const classInfo = {};
     classInfo[JSON_CONSTANTS.NAME] = classNameCapitalized;
     classInfo[JSON_CONSTANTS.REPOSITORY_NAME] = classRepositoryName;
 
-    ejs.renderFile(TEMPLATE_FILE_PATH_MAPPING.REPOSITORY, { classObject: classInfo }, {}, function(err, str) {
-        // console.log(str);
-        const filePath = `${REPOSITORIES_DIRECTORY}/${classRepositoryName}.java`;
-        utils.createFile(filePath, str);
-        utils.logSuccessMessage(`End processing for ${classRepositoryName}`);
-    });
+    generateFileUsingEJS(
+        TEMPLATE_FILE_PATH_MAPPING.REPOSITORY,
+        classRepositoryName,
+        `${REPOSITORIES_DIRECTORY}/${classRepositoryName}.java`,
+        classInfo
+    );
 };
 
-const generateServiceFileEJS = itemJSON => {
+const generateServiceFile = itemJSON => {
     const className = itemJSON[JSON_CONSTANTS.NAME];
     const classNameCapitalized = utils.capitalizeFirstLetter(className);
     const classNameSingular = utils.singularizeClassName(className).toLowerCase();
@@ -159,8 +156,6 @@ const generateServiceFileEJS = itemJSON => {
     const classRepositoryName = templates.repositoryNameTemplate(classNameCapitalized);
     const classServiceName = templates.serviceNameTemplate(classNameCapitalized);
     const classRepositoryVariable = templates.repositoryVariableNameTemplate(classNameSingular);
-
-    utils.logMessage(`Start processing for ${classServiceName}`);
 
     const classInfo = {};
     classInfo[JSON_CONSTANTS.NAME] = classNameCapitalized;
@@ -170,23 +165,34 @@ const generateServiceFileEJS = itemJSON => {
     classInfo[JSON_CONSTANTS.CLASS_SINGULAR_NAME] = classNameSingular.toLowerCase();
     classInfo[JSON_CONSTANTS.CLASS_PLURAL_NAME] = classNamePlural.toLowerCase();
 
-    ejs.renderFile(TEMPLATE_FILE_PATH_MAPPING.SERVICE, { classObject: classInfo }, {}, function(err, str) {
+    generateFileUsingEJS(
+        TEMPLATE_FILE_PATH_MAPPING.SERVICE,
+        classServiceName,
+        `${SERVICES_DIRECTORY}/${classServiceName}.java`,
+        classInfo
+    );
+};
+
+const generateFileUsingEJS = (templateFile, filename, filepath, data) => {
+    utils.logMessage(`Start processing for ${filename}`);
+    ejs.renderFile(templateFile, { classObject: data }, {}, function(err, str) {
         // console.log(str);
-        const filePath = `${SERVICES_DIRECTORY}/${classServiceName}.java`;
-        utils.createFile(filePath, str);
-        utils.logSuccessMessage(`End processing for ${classServiceName}`);
+        utils.createFile(filepath, str);
+        utils.logSuccessMessage(`End processing for ${filename}`);
     });
+};
+
+const generateFiles = classJSON => {
+    generateModelFile(classJSON);
+    generateRepositoryFile(classJSON);
+    generateServiceFile(classJSON);
 };
 
 const processJSON = inputJson => {
     const classes = inputJson[JSON_CONSTANTS.CLASSES];
 
     // Generate respective files for each class
-    classes.forEach(classItem => {
-        generateModelFileEJS(classItem);
-        generateRepositoryFileEJS(classItem);
-        generateServiceFileEJS(classItem);
-    });
+    classes.forEach(classItem => generateFiles(classItem));
 };
 
 const generate = jsonFilePath => {
