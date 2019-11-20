@@ -1,6 +1,7 @@
 const fs = require("fs");
 const rimraf = require("rimraf");
 const chalk = require("chalk");
+const pluralize = require("pluralize");
 const _ = require("lodash");
 const constants = require("./constants");
 
@@ -35,6 +36,9 @@ const getAccessModifierValue = accessModifier => {
 
 const capitalizeFirstLetter = input => _.startCase(_.toLower(input));
 
+const singularizeClassName = className => pluralize.singular(className);
+const pluralizeClassName = className => pluralize.plural(className);
+
 module.exports = {
     removeDirectory,
     createDirectory,
@@ -45,5 +49,7 @@ module.exports = {
     logSuccessMessage,
     getTypeValue,
     getAccessModifierValue,
-    capitalizeFirstLetter
+    capitalizeFirstLetter,
+    singularizeClassName,
+    pluralizeClassName
 };
