@@ -8,6 +8,11 @@
           "type": "int",
           "name": "name",
           "accessModifier": "public"
+        },
+        {
+          "type": "long",
+          "name": "radius",
+          "accessModifier": "private"
         }
       ],
       "methods": [
@@ -37,7 +42,7 @@
       "methods": [
         {
           "returnType": "string",
-          "name": "title",
+          "name": "Test",
           "accessModifier": "public",
           "params": [
             {
