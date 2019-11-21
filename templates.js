@@ -58,6 +58,15 @@ const repositoryNameTemplate = name => `${name}Repository`;
 const serviceNameTemplate = name => `${name}Service`;
 const repositoryVariableNameTemplate = name => `${name}Repository`;
 
+const relationShipTemplate = (accessModifier, relationShip, relatedClass, relatedClassField) => {
+    const accessModifierValue = utils.getAccessModifierValue(accessModifier);
+    const returnTypeValue = utils.capitalizeFirstLetter(relatedClass);
+    const field = relatedClassField.toLowerCase();
+    const relationShipValue = utils.getJPARelationshipValue(relationShip);
+
+    return `@${relationShipValue} \n ${accessModifierValue} ${returnTypeValue} ${field};`;
+};
+
 module.exports = {
     fieldTemplate,
     getMethodTemplate,
@@ -68,5 +77,6 @@ module.exports = {
     methodTemplate,
     repositoryNameTemplate,
     serviceNameTemplate,
-    repositoryVariableNameTemplate
+    repositoryVariableNameTemplate,
+    relationShipTemplate
 };
