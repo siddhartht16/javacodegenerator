@@ -15,7 +15,11 @@ import java.util.*;
 
     <%= classObject.fields %>
 
+    <%= classObject.relatedFields %>
+
     <%= classObject.fieldsAccessMethods %>
+
+    <%= classObject.relatedFieldsMethods %>
 
     <%= classObject.methods %>
 
