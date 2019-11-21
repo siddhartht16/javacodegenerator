@@ -79,41 +79,91 @@ const generateModelFile = itemJSON => {
     const accessModifier = itemJSON[JSON_CONSTANTS.ACCESS_MODIFIER];
     const fields = itemJSON[JSON_CONSTANTS.FIELDS];
     const methods = itemJSON[JSON_CONSTANTS.METHODS];
+    const relationShips = itemJSON[JSON_CONSTANTS.RELATIONSHIPS];
 
+    // Get the entitiy name
     const classNameCapitalized = utils.capitalizeFirstLetter(className);
+
+    // Generate the field definitions
     const fieldsStr = fields
-        .map(field =>
-            templates.fieldTemplate(
-                field[JSON_CONSTANTS.ACCESS_MODIFIER],
-                field[JSON_CONSTANTS.TYPE],
-                field[JSON_CONSTANTS.NAME]
-            )
-        )
-        .join("\n");
+        ? fields
+              .map(field =>
+                  templates.fieldTemplate(
+                      field[JSON_CONSTANTS.ACCESS_MODIFIER],
+                      field[JSON_CONSTANTS.TYPE],
+                      field[JSON_CONSTANTS.NAME]
+                  )
+              )
+              .join("\n")
+        : "";
 
+    // Generate the field getter and setter methods
     const getsetStr = fields
-        .map(field => {
-            const res = [];
-            res.push(templates.getMethodTemplate(field.type, field.name));
-            res.push(templates.setMethodTemplate(field.type, field.name));
-            return res.join("");
-        })
-        .join("\n");
+        ? fields
+              .map(field => {
+                  const res = [];
+                  res.push(templates.getMethodTemplate(field.type, field.name));
+                  res.push(templates.setMethodTemplate(field.type, field.name));
+                  return res.join("");
+              })
+              .join("\n")
+        : "";
 
+    // Generate the default constructor
     const defaultConstructorStr = templates.defaultConstructorTemplate(classNameCapitalized);
+
+    // Generate the parametrized constructor
     const paramConstructorStr = templates.paramConstructorTemplate(classNameCapitalized, fields);
 
+    // Generate the methods
     const methodsStr = methods
-        .map(method =>
-            templates.methodTemplate(
-                method[JSON_CONSTANTS.NAME],
-                method[JSON_CONSTANTS.ACCESS_MODIFIER],
-                method[JSON_CONSTANTS.RETURN_TYPE],
-                method[JSON_CONSTANTS.PARAMS]
-            )
-        )
-        .join("\n");
+        ? methods
+              .map(method =>
+                  templates.methodTemplate(
+                      method[JSON_CONSTANTS.NAME],
+                      method[JSON_CONSTANTS.ACCESS_MODIFIER],
+                      method[JSON_CONSTANTS.RETURN_TYPE],
+                      method[JSON_CONSTANTS.PARAMS]
+                  )
+              )
+              .join("\n")
+        : "";
 
+    // Generate the relationship fields
+    const relationShipsFieldsStr = relationShips
+        ? relationShips
+              .map(relationShip =>
+                  templates.relationShipTemplate(
+                      relationShip[JSON_CONSTANTS.ACCESS_MODIFIER],
+                      relationShip[JSON_CONSTANTS.RELATIONSHIP],
+                      relationShip[JSON_CONSTANTS.RELATED_CLASS],
+                      relationShip[JSON_CONSTANTS.RELATED_CLASS_FIELD]
+                  )
+              )
+              .join("\n")
+        : "";
+
+    // Generate the relationship fields methods
+    const relationShipsFieldMethodsStr = relationShips
+        ? relationShips
+              .map(relationShip => {
+                  const obj = {};
+                  obj[JSON_CONSTANTS.TYPE] = relationShip[JSON_CONSTANTS.RELATED_CLASS];
+                  obj[JSON_CONSTANTS.NAME] = relationShip[JSON_CONSTANTS.RELATED_CLASS_FIELD];
+                  console.log(obj);
+                  return obj;
+              })
+              .map(field => {
+                  const res = [];
+                  res.push(templates.getMethodTemplate(field.type, field.name));
+                  res.push(templates.setMethodTemplate(field.type, field.name));
+                  console.log(res);
+                  return res.join("");
+              })
+              .join("\n")
+        : "";
+
+    // Populate the class info object for the template
     const classInfo = {};
     classInfo[JSON_CONSTANTS.NAME] = classNameCapitalized;
     classInfo[JSON_CONSTANTS.ACCESS_MODIFIER] = accessModifier;
@@ -122,7 +172,10 @@ const generateModelFile = itemJSON => {
     classInfo[JSON_CONSTANTS.PARAM_CONSTRUCTOR] = paramConstructorStr;
     classInfo[JSON_CONSTANTS.FIELDS_ACCESS_METHODS] = getsetStr;
     classInfo[JSON_CONSTANTS.METHODS] = methodsStr;
+    classInfo[JSON_CONSTANTS.RELATED_FIELDS] = relationShipsFieldsStr;
+    classInfo[JSON_CONSTANTS.RELATED_FIELDS_METHODS] = relationShipsFieldMethodsStr;
 
+    // Generate the file
     generateFileUsingEJS(
         TEMPLATE_FILE_PATH_MAPPING.MODEL,
         classNameCapitalized,
@@ -136,10 +189,12 @@ const generateRepositoryFile = itemJSON => {
     const classNameCapitalized = utils.capitalizeFirstLetter(className);
     const classRepositoryName = templates.repositoryNameTemplate(classNameCapitalized);
 
+    // Populate the class info object for the template
     const classInfo = {};
     classInfo[JSON_CONSTANTS.NAME] = classNameCapitalized;
     classInfo[JSON_CONSTANTS.REPOSITORY_NAME] = classRepositoryName;
 
+    // Generate the file
     generateFileUsingEJS(
         TEMPLATE_FILE_PATH_MAPPING.REPOSITORY,
         classRepositoryName,
@@ -157,6 +212,7 @@ const generateServiceFile = itemJSON => {
     const classServiceName = templates.serviceNameTemplate(classNameCapitalized);
     const classRepositoryVariable = templates.repositoryVariableNameTemplate(classNameSingular);
 
+    // Populate the class info object for the template
     const classInfo = {};
     classInfo[JSON_CONSTANTS.NAME] = classNameCapitalized;
     classInfo[JSON_CONSTANTS.REPOSITORY_NAME] = classRepositoryName;
@@ -165,6 +221,7 @@ const generateServiceFile = itemJSON => {
     classInfo[JSON_CONSTANTS.CLASS_SINGULAR_NAME] = classNameSingular.toLowerCase();
     classInfo[JSON_CONSTANTS.CLASS_PLURAL_NAME] = classNamePlural.toLowerCase();
 
+    // Generate the file
     generateFileUsingEJS(
         TEMPLATE_FILE_PATH_MAPPING.SERVICE,
         classServiceName,
