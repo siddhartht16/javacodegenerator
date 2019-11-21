@@ -27,11 +27,19 @@ const logSuccessMessage = message => console.log(chalk.green(message));
 const logError = message => console.log(chalk.inverse.red(message));
 
 const getTypeValue = type => {
-    return constants.TYPE_MAPPING[type.toLowerCase()];
+    return type.toLowerCase() in constants.TYPE_MAPPING ? constants.TYPE_MAPPING[type.toLowerCase()] : type;
 };
 
 const getAccessModifierValue = accessModifier => {
-    return constants.ACCESS_MODIFIER_MAPPING[accessModifier.toLowerCase()];
+    return accessModifier.toLowerCase() in constants.ACCESS_MODIFIER_MAPPING
+        ? constants.ACCESS_MODIFIER_MAPPING[accessModifier.toLowerCase()]
+        : accessModifier;
+};
+
+const getJPARelationshipValue = relationShip => {
+    return relationShip.toLowerCase() in constants.JPA_RELATIONSHIP_MAPPING
+        ? constants.JPA_RELATIONSHIP_MAPPING[relationShip.toLowerCase()]
+        : relationShip;
 };
 
 const capitalizeFirstLetter = input => _.startCase(_.toLower(input));
@@ -51,5 +59,6 @@ module.exports = {
     getAccessModifierValue,
     capitalizeFirstLetter,
     singularizeClassName,
-    pluralizeClassName
+    pluralizeClassName,
+    getJPARelationshipValue
 };
