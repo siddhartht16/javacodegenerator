@@ -27,6 +27,14 @@
             }
           ]
         }
+      ],
+      "relationShips": [
+        {
+          "accessModifier": "public",
+          "relationShip": "onetoone",
+          "relatedClass": "Module",
+          "relatedClassField": "modules"
+        }
       ]
     },
     {
