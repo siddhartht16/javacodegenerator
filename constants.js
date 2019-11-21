@@ -24,6 +24,13 @@ const ACCESS_MODIFIER_MAPPING = {
     protected: "protected"
 };
 
+const JPA_RELATIONSHIP_MAPPING = {
+    onetoone: "OneToOne",
+    onetomany: "OneToMany",
+    manytoone: "ManyToOne",
+    manytomany: "ManyToMany"
+};
+
 const JSON_CONSTANTS = {
     CLASSES: "classes",
     ACCESS_MODIFIER: "accessModifier",
@@ -33,6 +40,12 @@ const JSON_CONSTANTS = {
     METHODS: "methods",
     RETURN_TYPE: "returnType",
     PARAMS: "params",
+    RELATIONSHIPS: "relationShips",
+    RELATIONSHIP: "relationShip",
+    RELATED_CLASS: "relatedClass",
+    RELATED_CLASS_FIELD: "relatedClassField",
+    RELATED_FIELDS: "relatedFields",
+    RELATED_FIELDS_METHODS: "relatedFieldsMethods",
     FIELDS_ACCESS_METHODS: "fieldsAccessMethods",
     DEFAULT_CONSTRUCTOR: "defaultConstructor",
     PARAM_CONSTRUCTOR: "paramConstructor",
@@ -59,5 +72,6 @@ module.exports = {
     TYPE_MAPPING,
     ACCESS_MODIFIER_MAPPING,
     JSON_CONSTANTS,
-    TEMPLATE_FILE_PATH_MAPPING
+    TEMPLATE_FILE_PATH_MAPPING,
+    JPA_RELATIONSHIP_MAPPING
 };
