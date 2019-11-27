@@ -1,7 +1,7 @@
 const { isEmpty, cloneDeep } = require("lodash");
-const utils = require("./utils");
-const templates = require("./templates");
-const validations = require("./validations");
+const utils = require("./common/utils");
+const templates = require("./common/templates");
+const validations = require("./common/validations");
 const {
     CONTROLLERS_DIRECTORY,
     JSON_CONSTANTS,
@@ -14,7 +14,7 @@ const {
     TEMPLATE_PLACEHOLDERS,
     ACCESS_MODIFIER_MAPPING,
     DEFAULT_MAPPINGS
-} = require("./constants");
+} = require("./common/constants");
 
 const createDirs = packageName => {
     const packageDir = `${OUTPUT_DIRECTORY}/${packageName}`;
