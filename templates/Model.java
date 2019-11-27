@@ -1,27 +1,31 @@
 <% if (classObject) { %>
 
+package <%= classObject.packageName %>.models;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.*;
 import java.util.*;
 
 @Entity
-<%= classObject.accessModifier %> class <%= classObject.name %> {
+<%= classObject.accessModifier %> class <%= classObject.className %> {
 
-    <%= classObject.defaultConstructor %>
+    <%- classObject.defaultConstructor %>
 
-    <%= classObject.paramConstructor %>
+    <%- classObject.paramConstructor %>
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    <%= classObject.fields %>
+    <%- classObject.fields %>
 
-    <%= classObject.relatedFields %>
+    <%- classObject.relatedFields %>
 
-    <%= classObject.fieldsAccessMethods %>
+    <%- classObject.fieldsGetSetMethods %>
 
-    <%= classObject.relatedFieldsMethods %>
+    <%- classObject.relatedFieldsMethods %>
 
-    <%= classObject.methods %>
+    <%- classObject.methods %>
 
 }
             <% } %>

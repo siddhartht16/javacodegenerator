@@ -1,5 +1,9 @@
 <% if (classObject) { %>
 
+package <%= classObject.packageName %>.services;
+
+import <%= classObject.packageName %>.models.<%= classObject.className %>;
+import <%= classObject.packageName %>.repositories.<%= classObject.repositoryName %>;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
@@ -12,35 +16,35 @@ public class <%= classObject.serviceName %> {
 	<%= classObject.repositoryName %> <%= classObject.repositoryVariable %>;
 
 	@GetMapping("/api/<%= classObject.classPluralName %>")
-	public List<<%= classObject.name %>> findAll<%= classObject.name %>s() {
-		return (List<<%= classObject.name %>>) <%= classObject.repositoryVariable %>.findAll();
+	public List<<%= classObject.className %>> findAll<%= classObject.className %>s() {
+		return <%= classObject.repositoryVariable %>.findAll();
 	}
 
 	@PostMapping("/api/<%= classObject.classPluralName %>")
-	public List<<%= classObject.name %>> create<%= classObject.name %>(@RequestBody <%= classObject.name %> new<%= classObject.name %>) {
+	public List<<%= classObject.className %>> create<%= classObject.className %>(@RequestBody <%= classObject.className %> new<%= classObject.className %>) {
 
-		new<%= classObject.name %> = <%= classObject.repositoryVariable %>.save(new<%= classObject.name %>);
-		return (List<<%= classObject.name %>>) <%= classObject.repositoryVariable %>.findAll();
+		new<%= classObject.className %> = <%= classObject.repositoryVariable %>.save(new<%= classObject.className %>);
+		return <%= classObject.repositoryVariable %>.findAll();
 	}
 
 	@GetMapping("/api/<%= classObject.classSingularName %>/{<%= classObject.classSingularName %>Id}")
-	public <%= classObject.name %> find<%= classObject.name %>ById(@PathVariable("<%= classObject.classSingularName %>Id") int <%= classObject.classSingularName %>Id) {
-		return <%= classObject.repositoryVariable %>.findById(<%= classObject.classSingularName %>Id).get();
+	public <%= classObject.className %> find<%= classObject.className %>ById(@PathVariable("<%= classObject.classSingularName %>Id") int <%= classObject.classSingularName %>Id) {
+		return <%= classObject.repositoryVariable %>.findById(<%= classObject.classSingularName %>Id);
 	}
 
 	@PutMapping("/api/<%= classObject.classSingularName %>/{<%= classObject.classSingularName %>Id}")
-	public <%= classObject.name %> update<%= classObject.name %>(@PathVariable("<%= classObject.classSingularName %>Id") int <%= classObject.classSingularName %>Id, @RequestBody <%= classObject.name %> new<%= classObject.name %>) {
+	public <%= classObject.className %> update<%= classObject.className %>(@PathVariable("<%= classObject.classSingularName %>Id") int <%= classObject.classSingularName %>Id, @RequestBody <%= classObject.className %> new<%= classObject.className %>) {
 
-		<%= classObject.name %> <%= classObject.classSingularName %>ToUpdate = <%= classObject.repositoryVariable %>.findById(<%= classObject.classSingularName %>Id).get();
+		<%= classObject.className %> <%= classObject.classSingularName %>ToUpdate = <%= classObject.repositoryVariable %>.findById(<%= classObject.classSingularName %>Id);
 		<%= classObject.classSingularName %>ToUpdate = <%= classObject.repositoryVariable %>.save(<%= classObject.classSingularName %>ToUpdate);
-		return <%= classObject.repositoryVariable %>.findById(<%= classObject.classSingularName %>Id).get();
+		return <%= classObject.repositoryVariable %>.findById(<%= classObject.classSingularName %>Id);
 	}
 
 	@DeleteMapping("/api/<%= classObject.classSingularName %>/{<%= classObject.classSingularName %>Id}")
-	public List<<%= classObject.name %>> delete<%= classObject.name %>(@PathVariable("<%= classObject.classSingularName %>Id") int <%= classObject.classSingularName %>Id) {
+	public List<<%= classObject.className %>> delete<%= classObject.className %>(@PathVariable("<%= classObject.classSingularName %>Id") int <%= classObject.classSingularName %>Id) {
 
 		<%= classObject.repositoryVariable %>.deleteById(<%= classObject.classSingularName %>Id);
-		return (List<<%= classObject.name %>>) <%= classObject.repositoryVariable %>.findAll();
+		return <%= classObject.repositoryVariable %>.findAll();
 	}
 }
 
