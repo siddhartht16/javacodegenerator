@@ -15,35 +15,35 @@ public class <%= classObject.serviceName %> {
 	@Autowired
 	<%= classObject.repositoryName %> <%= classObject.repositoryVariable %>;
 
-	@GetMapping("/api/<%= classObject.classSingularName %>s")
+	@GetMapping("/api/<%= classObject.classLowerCaseName %>s")
 	public List<<%= classObject.className %>> findAll<%= classObject.className %>s() {
 		return <%= classObject.repositoryVariable %>.findAll();
 	}
 
-	@PostMapping("/api/<%= classObject.classSingularName %>s")
+	@PostMapping("/api/<%= classObject.classLowerCaseName %>s")
 	public List<<%= classObject.className %>> create<%= classObject.className %>(@RequestBody <%= classObject.className %> new<%= classObject.className %>) {
 
 		new<%= classObject.className %> = <%= classObject.repositoryVariable %>.save(new<%= classObject.className %>);
 		return <%= classObject.repositoryVariable %>.findAll();
 	}
 
-	@GetMapping("/api/<%= classObject.classSingularName %>/{<%= classObject.classSingularName %>Id}")
-	public <%= classObject.className %> find<%= classObject.className %>ById(@PathVariable("<%= classObject.classSingularName %>Id") int <%= classObject.classSingularName %>Id) {
-		return <%= classObject.repositoryVariable %>.findById(<%= classObject.classSingularName %>Id);
+	@GetMapping("/api/<%= classObject.classLowerCaseName %>/{<%= classObject.classLowerCaseName %>Id}")
+	public <%= classObject.className %> find<%= classObject.className %>ById(@PathVariable("<%= classObject.classLowerCaseName %>Id") int <%= classObject.classLowerCaseName %>Id) {
+		return <%= classObject.repositoryVariable %>.findById(<%= classObject.classLowerCaseName %>Id);
 	}
 
-	@PutMapping("/api/<%= classObject.classSingularName %>/{<%= classObject.classSingularName %>Id}")
-	public <%= classObject.className %> update<%= classObject.className %>(@PathVariable("<%= classObject.classSingularName %>Id") int <%= classObject.classSingularName %>Id, @RequestBody <%= classObject.className %> new<%= classObject.className %>) {
+	@PutMapping("/api/<%= classObject.classLowerCaseName %>/{<%= classObject.classLowerCaseName %>Id}")
+	public <%= classObject.className %> update<%= classObject.className %>(@PathVariable("<%= classObject.classLowerCaseName %>Id") int <%= classObject.classLowerCaseName %>Id, @RequestBody <%= classObject.className %> new<%= classObject.className %>) {
 
-		<%= classObject.className %> <%= classObject.classSingularName %>ToUpdate = <%= classObject.repositoryVariable %>.findById(<%= classObject.classSingularName %>Id);
-		<%= classObject.classSingularName %>ToUpdate = <%= classObject.repositoryVariable %>.save(<%= classObject.classSingularName %>ToUpdate);
-		return <%= classObject.repositoryVariable %>.findById(<%= classObject.classSingularName %>Id);
+		<%= classObject.className %> <%= classObject.classLowerCaseName %>ToUpdate = <%= classObject.repositoryVariable %>.findById(<%= classObject.classLowerCaseName %>Id);
+		<%= classObject.classLowerCaseName %>ToUpdate = <%= classObject.repositoryVariable %>.save(<%= classObject.classLowerCaseName %>ToUpdate);
+		return <%= classObject.repositoryVariable %>.findById(<%= classObject.classLowerCaseName %>Id);
 	}
 
-	@DeleteMapping("/api/<%= classObject.classSingularName %>/{<%= classObject.classSingularName %>Id}")
-	public List<<%= classObject.className %>> delete<%= classObject.className %>(@PathVariable("<%= classObject.classSingularName %>Id") int <%= classObject.classSingularName %>Id) {
+	@DeleteMapping("/api/<%= classObject.classLowerCaseName %>/{<%= classObject.classLowerCaseName %>Id}")
+	public List<<%= classObject.className %>> delete<%= classObject.className %>(@PathVariable("<%= classObject.classLowerCaseName %>Id") int <%= classObject.classLowerCaseName %>Id) {
 
-		<%= classObject.repositoryVariable %>.deleteById(<%= classObject.classSingularName %>Id);
+		<%= classObject.repositoryVariable %>.deleteById(<%= classObject.classLowerCaseName %>Id);
 		return <%= classObject.repositoryVariable %>.findAll();
 	}
 }

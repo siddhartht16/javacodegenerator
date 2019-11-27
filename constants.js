@@ -117,7 +117,7 @@ const TEMPLATE_PLACEHOLDERS = {
     REPOSITORY_NAME: "repositoryName",
     SERVICE_NAME: "serviceName",
     REPOSITORY_VARIABLE: "repositoryVariable",
-    CLASS_SINGULAR_NAME: "classSingularName",
+    CLASS_LOWERCASE_NAME: "classLowerCaseName",
     RELATED_FIELDS: "relatedFields",
     RELATED_FIELDS_METHODS: "relatedFieldsMethods"
 };
