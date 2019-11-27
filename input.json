@@ -101,7 +101,7 @@
         {
           "dataType": "primitive",
           "type": "int",
-          "name": "sem_name",
+          "name": "semname",
           "accessModifier": "private",
           "columnName": "sem_title"
         }
