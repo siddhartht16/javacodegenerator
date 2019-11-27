@@ -1,65 +1,173 @@
 {
+  "packageName": "example",
   "classes": [
     {
       "accessModifier": "public",
       "name": "Course",
       "fields": [
         {
+          "dataType": "primitive",
           "type": "int",
           "name": "name",
-          "accessModifier": "public"
+          "accessModifier": "public",
+          "columnName": "name",
+          "jsonIgnore": true
         },
         {
+          "dataType": "primitive",
           "type": "long",
-          "name": "radius",
+          "name": "length",
           "accessModifier": "private"
+        },
+        {
+          "dataType": "collection",
+          "type": "string",
+          "name": "names",
+          "accessModifier": "public",
+          "interfaceType": "list",
+          "implementationType": "arraylist"
+        },
+        {
+          "dataType": "map",
+          "name": "namesMap",
+          "accessModifier": "public",
+          "interfaceType": "map",
+          "implementationType": "hashmap",
+          "keyType": "string",
+          "valueType": "integer"
         }
       ],
       "methods": [
         {
-          "returnType": "int",
-          "name": "name",
+          "dataType": "primitive",
+          "type": "void",
+          "name": "totalCount",
           "accessModifier": "public",
           "params": [
             {
+              "dataType": "primitive",
               "type": "int",
               "name": "count"
             }
           ]
-        }
-      ],
-      "relationShips": [
-        {
-          "accessModifier": "public",
-          "relationShip": "onetoone",
-          "relatedClass": "Module",
-          "relatedClassField": "modules"
         }
       ]
     },
     {
-      "accessModifier": "private",
+      "accessModifier": "public",
       "name": "Module",
       "fields": [
         {
+          "dataType": "primitive",
           "type": "int",
           "name": "title",
-          "accessModifier": "private"
+          "accessModifier": "private",
+          "columnName": "title"
         }
       ],
       "methods": [
         {
-          "returnType": "string",
+          "dataType": "primitive",
+          "type": "string",
           "name": "Test",
           "accessModifier": "public",
           "params": [
             {
+              "dataType": "primitive",
               "type": "int",
               "name": "count"
             }
           ]
         }
       ]
+    },
+    {
+      "accessModifier": "public",
+      "name": "Section",
+      "fields": [
+        {
+          "dataType": "primitive",
+          "type": "int",
+          "name": "title",
+          "accessModifier": "private",
+          "columnName": "title"
+        }
+      ]
+    },
+    {
+      "accessModifier": "public",
+      "name": "Semester",
+      "fields": [
+        {
+          "dataType": "primitive",
+          "type": "int",
+          "name": "sem_name",
+          "accessModifier": "private",
+          "columnName": "sem_title"
+        }
+      ]
+    }
+  ],
+  "relationShips": [
+    {
+      "accessModifier": "public",
+      "relationShip": "manytoone",
+      "from": {
+        "class": "Course",
+        "mappedBy": "course",
+        "field": "modules",
+        "interfaceType": "list",
+        "implementationType": "arraylist"
+      },
+      "to": {
+        "class": "Module",
+        "joinColumn": "fk_course",
+        "field": "course"
+      }
+    },
+    {
+      "accessModifier": "public",
+      "relationShip": "onetoone",
+      "from": {
+        "class": "Course",
+        "joinTable": "course_sections",
+        "joinColumns": [
+          "section_id"
+        ],
+        "inverseJoinColumns": [
+          "course_id"
+        ],
+        "field": "courseSection"
+      },
+      "to": {
+        "class": "Section",
+        "mappedBy": "courseSection",
+        "field": "sectionCourse"
+      }
+    },
+    {
+      "accessModifier": "public",
+      "relationShip": "manytomany",
+      "from": {
+        "class": "Course",
+        "joinTable": "course_semester",
+        "joinColumns": [
+          "semester_id"
+        ],
+        "inverseJoinColumns": [
+          "course_id"
+        ],
+        "field": "courseSemesters",
+        "interfaceType": "list",
+        "implementationType": "arraylist"
+      },
+      "to": {
+        "class": "Semester",
+        "mappedBy": "courseSemesters",
+        "field": "semesterCourses",
+        "interfaceType": "list",
+        "implementationType": "arraylist"
+      }
     }
   ]
 }
