@@ -15,12 +15,12 @@ public class <%= classObject.serviceName %> {
 	@Autowired
 	<%= classObject.repositoryName %> <%= classObject.repositoryVariable %>;
 
-	@GetMapping("/api/<%= classObject.classPluralName %>")
+	@GetMapping("/api/<%= classObject.classSingularName %>s")
 	public List<<%= classObject.className %>> findAll<%= classObject.className %>s() {
 		return <%= classObject.repositoryVariable %>.findAll();
 	}
 
-	@PostMapping("/api/<%= classObject.classPluralName %>")
+	@PostMapping("/api/<%= classObject.classSingularName %>s")
 	public List<<%= classObject.className %>> create<%= classObject.className %>(@RequestBody <%= classObject.className %> new<%= classObject.className %>) {
 
 		new<%= classObject.className %> = <%= classObject.repositoryVariable %>.save(new<%= classObject.className %>);
