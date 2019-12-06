@@ -33,4 +33,4 @@ where,
 Sample JSON is provided in the file input.json. Use it to further customize the JSON.
 
 ## JSON Configuration
-Separate README for JSON Configuration is also provided.
+Separate README explaining the JSON Configuration and customisation is at [JSON_README](https://github.com/siddhartht16/javacodegenerator/blob/master/JSON_README.md).
