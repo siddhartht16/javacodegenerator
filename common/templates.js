@@ -167,6 +167,8 @@ const getGetSetMethodVal = fieldInfo => {
 };
 
 const paramsTemplate = fields => {
+    if (isEmpty(fields)) return ``;
+
     const result = fields.map(fieldInfo => {
         const data_type = utils.getKeyValueFromJSON(fieldInfo, constants.JSON_CONSTANTS.DATA_TYPE);
         const dataTypeVal = utils.getDataTypeValue(data_type);
@@ -223,6 +225,7 @@ const defaultConstructorTemplate = className => {
 const getDefaultConstructorVal = className => defaultConstructorTemplate(className);
 
 const paramConstructorBodyTemplate = fields => {
+    if (isEmpty(fields)) return ``;
     const result = fields.map(item => `this.${item.name} = ${item.name};`);
     return result.join("\n");
 };
@@ -237,8 +240,8 @@ const getParametrizedConstructorVal = (className, fields) => paramConstructorTem
 
 const getClassNameVal = (accessModifier, className) => className(accessModifier, className);
 
-const methodTemplate = (accessModifier, returnType, name, params) => {
-    return `${accessModifier} ${returnType} ${name}(${params}) { }`;
+const methodTemplate = (accessModifier, returnType, name, params, methodBody) => {
+    return `${accessModifier} ${returnType} ${name}(${params}) { ${methodBody} \n }`;
 };
 
 const getMethodVal = methodInfo => {
@@ -260,12 +263,14 @@ const getMethodVal = methodInfo => {
         interfaceTypeVal = ``,
         keyTypeVal = ``,
         valueTypeVal = ``,
+        methodBodyVal = ``,
         result = ``;
 
     switch (dataTypeVal) {
         case constants.DATA_TYPE_MAPPING.PRIMITIVE:
             type = utils.getKeyValueFromJSON(methodInfo, constants.JSON_CONSTANTS.TYPE);
             typeVal = utils.getTypeValue(type);
+            methodBodyVal = utils.getMethodReturnStatementByType(type);
             break;
         case constants.DATA_TYPE_MAPPING.COLLECTION:
             type = utils.getKeyValueFromJSON(methodInfo, constants.JSON_CONSTANTS.TYPE);
@@ -273,6 +278,7 @@ const getMethodVal = methodInfo => {
             interfaceType = utils.getKeyValueFromJSON(methodInfo, constants.JSON_CONSTANTS.INTERFACE_TYPE);
             interfaceTypeVal = utils.getCollectionTypeValue(interfaceType);
             typeVal = `${interfaceTypeVal}<${boxTypeVal}>`;
+            methodBodyVal = utils.getMethodReturnStatementByType("");
             break;
         case constants.DATA_TYPE_MAPPING.MAP:
             interfaceType = utils.getKeyValueFromJSON(methodInfo, constants.JSON_CONSTANTS.INTERFACE_TYPE);
@@ -282,13 +288,14 @@ const getMethodVal = methodInfo => {
             keyTypeVal = utils.getBoxTypeValue(keyType);
             valueTypeVal = utils.getBoxTypeValue(valueType);
             typeVal = `${interfaceTypeVal}<${keyTypeVal}, ${valueTypeVal}>`;
+            methodBodyVal = utils.getMethodReturnStatementByType("");
             break;
         default:
             break;
     }
 
     if (!isEmpty(typeVal)) {
-        result = methodTemplate(accessModifierVal, typeVal, name, paramsVal);
+        result = methodTemplate(accessModifierVal, typeVal, name, paramsVal, methodBodyVal);
     }
     return result;
 };
