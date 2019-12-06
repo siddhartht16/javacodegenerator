@@ -227,6 +227,7 @@ where,
 * from = From side of the relationship. This object should contain specific keys as per the relationship
 * to = To side of the relationship. This object should contain specific keys as per the relationship
 
+Expected objects for each relationship are explained below
 
 * For a **OneToOne** relationship
   Following JSON is expected for a OneToOne relationship definition in the relationships array.
