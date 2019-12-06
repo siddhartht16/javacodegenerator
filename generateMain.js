@@ -3,12 +3,7 @@ const utils = require("./common/utils");
 const templates = require("./common/templates");
 const validations = require("./common/validations");
 const {
-    CONTROLLERS_DIRECTORY,
     JSON_CONSTANTS,
-    MODELS_DIRECTORY,
-    OUTPUT_DIRECTORY,
-    REPOSITORIES_DIRECTORY,
-    SERVICES_DIRECTORY,
     TEMPLATE_FILE_PATH_MAPPING,
     JPA_RELATIONSHIP_CONSTANTS,
     TEMPLATE_PLACEHOLDERS,
@@ -16,14 +11,13 @@ const {
     DEFAULT_MAPPINGS
 } = require("./common/constants");
 
-const createDirs = packageName => {
-    const packageDir = `${OUTPUT_DIRECTORY}/${packageName}`;
-    utils.createDirectory(OUTPUT_DIRECTORY);
-    utils.createDirectory(`${packageDir}`);
-    utils.createDirectory(`${packageDir}/${MODELS_DIRECTORY}`);
-    utils.createDirectory(`${packageDir}/${CONTROLLERS_DIRECTORY}`);
-    utils.createDirectory(`${packageDir}/${REPOSITORIES_DIRECTORY}`);
-    utils.createDirectory(`${packageDir}/${SERVICES_DIRECTORY}`);
+const createDirs = outputPath => {
+    const outputDir = utils.getOutputPath(outputPath);
+    utils.createDirectory(outputDir);
+    utils.emptyDirectory(utils.getControllerFilesPath(outputDir));
+    utils.emptyDirectory(utils.getModelFilesPath(outputDir));
+    utils.emptyDirectory(utils.getRepositoryFilesPath(outputDir));
+    utils.emptyDirectory(utils.getServiceFilesPath(outputDir));
 };
 
 const getRelationShipFieldVal = relationShipObj => {
@@ -93,7 +87,7 @@ const getRelationShipFieldsGetSetMethodsVal = relationShipObj => {
     return res.join("");
 };
 
-const generateModelFile = (packageName, classJSON, relationShipsMapping) => {
+const generateModelFile = (outputPath, packageName, classJSON, relationShipsMapping) => {
     const className = utils.getKeyValueFromJSON(classJSON, JSON_CONSTANTS.NAME);
 
     validations.validateClassName(className);
@@ -164,12 +158,12 @@ const generateModelFile = (packageName, classJSON, relationShipsMapping) => {
     utils.generateFileUsingEJS(
         TEMPLATE_FILE_PATH_MAPPING.MODEL,
         fileName,
-        `${utils.getModelFilesPath(packageName)}${fileName}`,
+        `${utils.getModelFilesPath(outputPath)}${fileName}`,
         classInfo
     );
 };
 
-const generateRepositoryFile = (packageName, classJSON) => {
+const generateRepositoryFile = (outputPath, packageName, classJSON) => {
     const className = utils.getKeyValueFromJSON(classJSON, JSON_CONSTANTS.NAME);
 
     validations.validateClassName(className);
@@ -187,12 +181,12 @@ const generateRepositoryFile = (packageName, classJSON) => {
     utils.generateFileUsingEJS(
         TEMPLATE_FILE_PATH_MAPPING.REPOSITORY,
         fileName,
-        `${utils.getRepositoryFilesPath(packageName)}${fileName}`,
+        `${utils.getRepositoryFilesPath(outputPath)}${fileName}`,
         classInfo
     );
 };
 
-const generateServiceFile = (packageName, classJSON) => {
+const generateServiceFile = (outputPath, packageName, classJSON) => {
     const className = utils.getKeyValueFromJSON(classJSON, JSON_CONSTANTS.NAME);
 
     validations.validateClassName(className);
@@ -215,7 +209,7 @@ const generateServiceFile = (packageName, classJSON) => {
     utils.generateFileUsingEJS(
         TEMPLATE_FILE_PATH_MAPPING.SERVICE,
         fileName,
-        `${utils.getServiceFilesPath(packageName)}${fileName}`,
+        `${utils.getServiceFilesPath(outputPath)}${fileName}`,
         classInfo
     );
 };
@@ -262,13 +256,13 @@ const getRelationShipsMapping = relationShips => {
     return result;
 };
 
-const generateFiles = (packageName, classJSON, relationShipsMapping) => {
-    generateModelFile(packageName, classJSON, relationShipsMapping);
-    generateRepositoryFile(packageName, classJSON, relationShipsMapping);
-    generateServiceFile(packageName, classJSON, relationShipsMapping);
+const generateFiles = (outputPath, packageName, classJSON, relationShipsMapping) => {
+    generateModelFile(outputPath, packageName, classJSON, relationShipsMapping);
+    generateRepositoryFile(outputPath, packageName, classJSON, relationShipsMapping);
+    generateServiceFile(outputPath, packageName, classJSON, relationShipsMapping);
 };
 
-const processJSON = jsonFilePath => {
+const processJSON = (jsonFilePath, outputPath) => {
     // Get the json data
     const jsonObj = utils.getJSONData(jsonFilePath);
 
@@ -276,23 +270,25 @@ const processJSON = jsonFilePath => {
     const relationShips = utils.getKeyValueFromJSON(jsonObj, JSON_CONSTANTS.RELATIONSHIPS, {});
 
     // Return if no classes defined
-    if (isEmpty(classes)) return;
+    if (isEmpty(classes)) {
+        utils.logError("Exit, no classes defined in the input JSON");
+        return;
+    }
 
     const packageName = utils.getKeyValueFromJSON(jsonObj, JSON_CONSTANTS.PACKAGE_NAME, DEFAULT_MAPPINGS.PACKAGE_NAME);
     const relationShipsMapping = getRelationShipsMapping(relationShips);
 
     // Create all the directories
-    createDirs(packageName);
+    createDirs(outputPath);
 
     // Generate respective files for each class in respective directories
-    classes.forEach(classItem => generateFiles(packageName, classItem, relationShipsMapping));
+    classes.forEach(classItem => generateFiles(outputPath, packageName, classItem, relationShipsMapping));
 };
 
-const generate = jsonFilePath => {
+const generate = (jsonFilePath, outputPath) => {
     // Validate the input json file
     validations.validateJSONFile(jsonFilePath);
-    utils.cleanUp();
-    processJSON(jsonFilePath);
+    processJSON(jsonFilePath, outputPath);
 };
 
 module.exports = {
