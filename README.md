@@ -33,4 +33,4 @@ where,
 Sample JSON is provided in the file input.json. Use it to further customize the JSON.
 
 ## JSON Configuration
-Separate READMe for JSON Configuration is also provided.
+Separate README for JSON Configuration is also provided.
