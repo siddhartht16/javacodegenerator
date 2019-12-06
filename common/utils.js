@@ -1,19 +1,19 @@
 const fs = require("fs");
-const rimraf = require("rimraf");
+const fs_extra = require("fs-extra");
 const chalk = require("chalk");
 const ejs = require("ejs");
 const { startCase, toLower, isEmpty } = require("lodash");
 const constants = require("./constants");
-
-const removeDirectory = dir_name => rimraf.sync(dir_name);
-
-const cleanUp = () => removeDirectory(constants.OUTPUT_DIRECTORY);
 
 const createDirectory = dir_name => {
     if (!fs.existsSync(dir_name)) {
         fs.mkdirSync(dir_name);
     }
 };
+
+const emptyDirectory = dir_name => fs_extra.emptyDirSync(dir_name);
+
+const getOutputPath = outputPath => (isEmpty(outputPath) ? constants.OUTPUT_DIRECTORY : outputPath);
 
 const createFile = (path, contents) => {
     fs.writeFileSync(path, contents);
@@ -38,16 +38,13 @@ const getJSONData = jsonFilePath => {
 
 const getJavaFileName = filename => `${filename}.java`;
 
-const getControllerFilesPath = packageName =>
-    `${constants.OUTPUT_DIRECTORY}/${packageName}/${constants.CONTROLLERS_DIRECTORY}/`;
+const getControllerFilesPath = output => `${output}/${constants.CONTROLLERS_DIRECTORY}/`;
 
-const getModelFilesPath = packageName => `${constants.OUTPUT_DIRECTORY}/${packageName}/${constants.MODELS_DIRECTORY}/`;
+const getModelFilesPath = output => `${output}/${constants.MODELS_DIRECTORY}/`;
 
-const getRepositoryFilesPath = packageName =>
-    `${constants.OUTPUT_DIRECTORY}/${packageName}/${constants.REPOSITORIES_DIRECTORY}/`;
+const getRepositoryFilesPath = output => `${output}/${constants.REPOSITORIES_DIRECTORY}/`;
 
-const getServiceFilesPath = packageName =>
-    `${constants.OUTPUT_DIRECTORY}/${packageName}/${constants.SERVICES_DIRECTORY}/`;
+const getServiceFilesPath = output => `${output}/${constants.SERVICES_DIRECTORY}/`;
 
 const handleError = (error, message) => {
     logError(message);
@@ -103,11 +100,39 @@ const getRelationShipsObject = (className, relationShips = {}) => {
     return className && className.toLowerCase() in relationShips ? relationShips[className.toLowerCase()] : [];
 };
 
+const getMethodReturnStatementByType = type => {
+    let result = constants.DEFAULT_METHOD_RETURNS.NULL_RETURN;
+    switch (type.toLowerCase()) {
+        case constants.TYPE_MAPPING.SHORT:
+        case constants.TYPE_MAPPING.INT:
+        case constants.TYPE_MAPPING.LONG:
+        case constants.TYPE_MAPPING.FLOAT:
+        case constants.TYPE_MAPPING.DOUBLE:
+            result = constants.DEFAULT_METHOD_RETURNS.NUMERIC_RETURN;
+            break;
+        case constants.TYPE_MAPPING.BOOLEAN:
+            result = constants.DEFAULT_METHOD_RETURNS.BOOLEAN_RETURN;
+            break;
+        case constants.TYPE_MAPPING.BYTE:
+            result = constants.DEFAULT_METHOD_RETURNS.BYTE_RETURN;
+            break;
+        case constants.TYPE_MAPPING.CHAR:
+            result = constants.DEFAULT_METHOD_RETURNS.CHAR_RETURN;
+            break;
+        case constants.TYPE_MAPPING.VOID:
+            result = constants.DEFAULT_METHOD_RETURNS.VOID_RETURN;
+            break;
+        default:
+            break;
+    }
+    return result;
+};
+
 module.exports = {
-    removeDirectory,
     createDirectory,
-    cleanUp,
+    emptyDirectory,
     createFile,
+    getOutputPath,
     generateFileUsingEJS,
     getJSONData,
     getJavaFileName,
@@ -127,5 +152,6 @@ module.exports = {
     getMapTypeValue,
     getAccessModifierValue,
     capitalizeFirstLetter,
-    getRelationShipsObject
+    getRelationShipsObject,
+    getMethodReturnStatementByType
 };
