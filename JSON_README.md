@@ -231,7 +231,6 @@ Sample JSON is provided in the **input.json** file. This readme is to explain th
   For a **OneToOne** relationship
     Following JSON is expected for a OneToOne relationship definition in the relationships array.
     The from and to sections should contain the following keys in the respective object. 
-    
     ```
       {
         "accessModifier": "public",
@@ -254,7 +253,6 @@ Sample JSON is provided in the **input.json** file. This readme is to explain th
         }
       }
     ```
-    
     where, apart from the keys already defined above, others are:
     * mappedBy = the field name to use in the annotation in the to class
     * field = the field name
@@ -266,7 +264,6 @@ Sample JSON is provided in the **input.json** file. This readme is to explain th
   For a **ManyToOne** relationship
     Following JSON is expected for a ManyToOne relationship definition in the relationships array.
     The from and to sections should contain the following keys in the respective object. 
-    
     ```
       {
         "accessModifier": "public",
@@ -285,7 +282,6 @@ Sample JSON is provided in the **input.json** file. This readme is to explain th
         }
       }
     ```
-    
     where, apart from the keys already defined above, others are:
     * mappedBy = the field name to use in the annotation 
     * field = the field name
@@ -296,7 +292,6 @@ Sample JSON is provided in the **input.json** file. This readme is to explain th
   For a **ManyToMany** relationship
     Following JSON is expected for a ManyToMany relationship definition in the relationships array.
     The from and to sections should contain the following keys in the respective object. 
-    
     ```
      {
         "accessModifier": "public",
@@ -323,7 +318,6 @@ Sample JSON is provided in the **input.json** file. This readme is to explain th
         }
       }
     ```
-    
     where, apart from the keys already defined above, others are:
     * mappedBy = the field name to use in the annotation 
     * field = the field name
