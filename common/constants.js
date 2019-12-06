@@ -7,26 +7,26 @@ const TEMPLATE_FILES_DIRECTORY = `templates`;
 
 const TYPE_MAPPING = {
     VOID: "void",
-    BYTE: "byte",
     SHORT: "short",
     INT: "int",
     LONG: "long",
     FLOAT: "float",
     DOUBLE: "double",
     BOOLEAN: "boolean",
+    BYTE: "byte",
     CHAR: "char",
     STRING: "String"
 };
 
 const BOX_TYPE_MAPPING = {
-    BYTE: "Byte",
     SHORT: "Short",
     INTEGER: "Integer",
     LONG: "Long",
     FLOAT: "Float",
     DOUBLE: "Double",
     BOOLEAN: "Boolean",
-    CHAR: "Char",
+    BYTE: "Byte",
+    CHARACTER: "Character",
     STRING: "String"
 };
 
@@ -163,6 +163,15 @@ const DEFAULT_MAPPINGS = {
     MAP_IMPLEMENTATION: MAP_TYPE_MAPPING.HASHMAP
 };
 
+const DEFAULT_METHOD_RETURNS = {
+    NUMERIC_RETURN: "return -1;",
+    VOID_RETURN: "",
+    NULL_RETURN: "return null;",
+    BOOLEAN_RETURN: "return true;",
+    BYTE_RETURN: 'return Byte.parseByte("");',
+    CHAR_RETURN: "return 'a';"
+};
+
 module.exports = {
     OUTPUT_DIRECTORY,
     MODELS_DIRECTORY,
@@ -182,5 +191,6 @@ module.exports = {
     JPA_RELATIONSHIP_CONSTANTS,
     TEMPLATE_PLACEHOLDERS,
     FETCH_TYPES,
-    CASCADE_TYPES
+    CASCADE_TYPES,
+    DEFAULT_METHOD_RETURNS
 };
