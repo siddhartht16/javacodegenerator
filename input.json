@@ -1,5 +1,5 @@
 {
-  "packageName": "example",
+  "packageName": "com.example.javaoutput",
   "classes": [
     {
       "accessModifier": "public",
@@ -40,7 +40,7 @@
       "methods": [
         {
           "dataType": "primitive",
-          "type": "void",
+          "type": "int",
           "name": "totalCount",
           "accessModifier": "public",
           "params": [
@@ -50,6 +50,21 @@
               "name": "count"
             }
           ]
+        },
+        {
+          "dataType": "collection",
+          "type": "character",
+          "name": "totalChar",
+          "accessModifier": "public",
+          "interfaceType": "list",
+          "implementationType": "arraylist"
+        },
+        {
+          "dataType": "primitive",
+          "type": "byte",
+          "name": "totalByte",
+          "accessModifier": "public",
+          "params": []
         }
       ]
     },
@@ -70,6 +85,19 @@
           "dataType": "primitive",
           "type": "string",
           "name": "Test",
+          "accessModifier": "public",
+          "params": [
+            {
+              "dataType": "primitive",
+              "type": "int",
+              "name": "count"
+            }
+          ]
+        },
+        {
+          "dataType": "primitive",
+          "type": "void",
+          "name": "totalCount2",
           "accessModifier": "public",
           "params": [
             {
